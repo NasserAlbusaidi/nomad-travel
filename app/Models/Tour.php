@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Tour extends Model
 {
@@ -55,5 +57,35 @@ class Tour extends Model
         $lastItem = collect($this->itinerary)->last();
 
         return $lastItem['description'] ?? 'Not specified';
+    }
+
+    public function bookings(): HasMany
+    {
+        return $this->hasMany(Booking::class);
+    }
+
+    /**
+     * Get the reviews for the tour.
+     */
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class);
+    }
+
+    /**
+     * Get the gallery images for the tour.
+     */
+    public function galleryImages(): HasMany
+    {
+        return $this->hasMany(GalleryImage::class);
+    }
+
+    /**
+     * Get the different sessions available for the tour.
+     * This allows for "Half Day - Morning", "Full Day", etc., with different prices.
+     */
+    public function sessions(): HasMany
+    {
+        return $this->hasMany(TourSession::class);
     }
 }
